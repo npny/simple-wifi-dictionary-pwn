@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Straeto App</title>
+	<style>
+		@import url(https://fonts.googleapis.com/css?family=PT+Sans:400,700&subset=latin-ext);
+
+		body {
+			margin: 0;
+			font-size: 25px;
+			text-transform: uppercase;
+			font-family: sans-serif;
+			font-weight: bold;
+			font-family: 'PT Sans', sans-serif;
+			pointer-events: none;
+    		user-select: none;
+		}
+
+		video, main {
+			position: fixed;
+			height: 100vh;
+			width: 100vw;
+		}
+
+		video {
+			object-fit: cover;
+		}
+
+		main {
+			display: flex;
+			flex-direction: column;
+			justify-content: space-between;
+			align-items: center;
+			/*background-image: url('screen3.png');*/
+			background-size: cover;
+			background-position: 0px -25px;
+		}
+
+		/*main > * {opacity: .5}*/
+
+		header {
+			background-color: #f8d432;
+    		color: #cc362b;
+    		border-bottom: 6px solid #63a149;
+    		box-sizing: border-box;
+    		width: 100%;
+    		text-align: center;
+    		padding: 8px 15px;
+		}
+
+		hamburger {
+			position: absolute;
+			display: block;
+			left: 0;
+			top: 0;
+			background: #cc362b;
+			color: #f8d432;
+			border-radius: 100%;
+			width: 36px;
+			height: 36px;
+			text-align: center;
+			vertical-align: middle;
+			margin: 7px 10px;
+		}
+
+		logo {
+			background-color: #61a6cf;
+			line-height: 120px;
+			width: 120px;
+			font-size: 80px;
+			border-radius: 100%;
+			color: white;
+			text-align: center;
+		}
+
+		footer {
+			display: flex;
+			flex-direction: column;
+			width: 100%;
+			color: #ffffff;
+		}
+
+		type, dots {color: #f1cd30;}
+		type, fare {background: #6fb353;}
+		clock {background: #64a14b;}
+
+		type {
+			align-self: flex-start;
+			padding: 10px 5px;
+			border-radius: 0px 2px 0px 0px;
+		}
+
+		clock {
+			display: flex;
+			padding: 10px 15px;
+			justify-content: center;
+			padding-top: 25px;
+		}
+
+		number {display: flex; flex-direction: column; text-align: center;}
+		sup, sub {vertical-align: baseline;}
+		sup, dots {font-size: 3em; line-height: 1em}
+		sub {font-size: 15px;}
+
+		fare {
+			padding: 10px 15px;
+			text-transform: capitalize;
+			font-weight: normal;
+		}
+
+		fare count {
+			color: #f1cd30;
+			font-size: 30px;
+			margin-right: 10px;
+		}
+
+		fare span {
+			font-size: 20px;
+		}
+
+		/*
+		fare count {
+			display: inline-block;
+			background: #ffffff;
+			color: #6fb353;
+			border-radius: 100%;
+			font-weight: normal;
+			text-align: center;
+			vertical-align: middle;
+			font-size: 40px;
+			width: 1em;
+			line-height: 1em;
+			margin-right: 10px;
+		}
+		*/
+
+		fare count, fare span {display: inline-block; vertical-align: middle;}
+	</style>
+</head>
+<body>
+	<video autoplay></video>
+	<main>
+		<header>
+			<hamburger>☰</hamburger>
+			<div>My ticket</div>
+		</header>
+
+		<logo>S</logo>
+
+		<footer>
+			<type>General ticket</type>
+			<clock>
+				<number>
+					<sup>01</sup>
+					<sub>hours</sub>
+				</number>
+				<dots>:</dots>
+				<number>
+					<sup>15</sup>
+					<sub>minutes</sub>
+				</number>
+				<dots>:</dots>
+				<number>
+					<sup>00</sup>
+					<sub>seconds</sub>
+				</number>
+			</clock>
+			<fare><count>1x</count><span>Normal fare</span></fare>
+		</footer>
+	</main>
+<script>
+
+	document.onclick = e=>{
+		document.documentElement.requestFullscreen()
+		
+		navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}}).then(src => {
+			document.querySelector("video").srcObject = src;
+		})
+
+		const start = new Date();
+		function countdown() {
+			const seconds_remaining = 1*60*60 + 15*60 - (new Date()-start)/1000
+			const numbers = document.querySelectorAll("sup")
+			numbers[0].innerText = (~~(seconds_remaining/3600)%24).toString().padStart(2, "0")
+			numbers[1].innerText = (~~(seconds_remaining/60)%60).toString().padStart(2, "0")
+			numbers[2].innerText = (~~(seconds_remaining)%60).toString().padStart(2, "0")
+		}
+		setInterval(countdown, 1000)
+	}
+
+</script>
+</body>
+</html>
