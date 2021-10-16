@@ -14,7 +14,7 @@
 			font-family: sans-serif;
 			font-weight: bold;
 			font-family: 'PT Sans', sans-serif;
-			pointer-events: none;
+			
     		user-select: none;
 		}
 
@@ -66,11 +66,11 @@
 		}
 
 		logo {
-			background-color: #61a6cf;
+			background-color: #f1cd30;
 			line-height: 120px;
 			width: 120px;
 			font-size: 80px;
-			border-radius: 100%;
+			border-radius: 0;
 			color: white;
 			text-align: center;
 		}
@@ -172,13 +172,22 @@
 	</main>
 <script>
 
-	document.onclick = e=>{
+	document.querySelector('header').onclick = e =>
+		document.fullscreen &&
+		document.exitFullscreen() ||
 		document.documentElement.requestFullscreen()
-		
-		navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}}).then(src => {
-			document.querySelector("video").srcObject = src;
-		})
 
+	document.querySelector('logo').onclick = e => {
+		if(document.querySelector("video").srcObject)
+			document.querySelector("video").srcObject = null
+		else
+			navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}})
+			.then(src => {
+				document.querySelector("video").srcObject = src;
+			})
+	}
+
+	document.querySelector('footer').onclick = e => {
 		const start = new Date();
 		function countdown() {
 			const seconds_remaining = 1*60*60 + 15*60 - (new Date()-start)/1000
@@ -187,7 +196,8 @@
 			numbers[1].innerText = (~~(seconds_remaining/60)%60).toString().padStart(2, "0")
 			numbers[2].innerText = (~~(seconds_remaining)%60).toString().padStart(2, "0")
 		}
-		setInterval(countdown, 1000)
+		clearInterval(window.countdownInterval)
+		window.countdownInterval = setInterval(countdown, 100)
 	}
 
 </script>
