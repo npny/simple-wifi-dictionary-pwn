@@ -178,13 +178,22 @@
 		document.documentElement.requestFullscreen()
 
 	document.querySelector('logo').onclick = e => {
-		if(document.querySelector("video").srcObject)
+		if(document.querySelector("video").srcObject) {
+			document.querySelector("video").srcObject.getTracks().forEach(t => t.stop())
 			document.querySelector("video").srcObject = null
+		}
 		else
 			navigator.mediaDevices.getUserMedia({video: {facingMode: 'environment'}})
 			.then(src => {
 				document.querySelector("video").srcObject = src;
 			})
+	}
+	
+	document.querySelector('fare').onclick = e => {
+		navigator.mediaDevices.getUserMedia({video: {facingMode: 'user'}})
+		.then(src => {
+			document.querySelector("video").srcObject = src;
+		})
 	}
 
 	document.querySelector('footer').onclick = e => {
